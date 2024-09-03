@@ -1,6 +1,6 @@
 %code requires {
 #include <stdio.h>
-#include "parser.h"
+#include "misc.h"
 typedef void* yyscan_t;
 }
 %code provides {
@@ -17,6 +17,7 @@ void yyerror (YYLTYPE *yylloc, yyscan_t scanner, char const *s);
 %token TK_PLUS "+"
 %token TK_TILDE "~" 
 %token TK_CARET "^"
+%token TK_STAR "*"
 %token TK_LT "<"
 %token TK_GT ">"
 %token TK_GE ">="
@@ -24,14 +25,19 @@ void yyerror (YYLTYPE *yylloc, yyscan_t scanner, char const *s);
 %token TK_EQ "="
 %token TK_OR "||"
 %token TK_X "X"
-%type <digits> range_set
+%nterm <digits> range_set
 
 %define api.pure full
 %define api.value.type {union YYSTYPE}
 %define api.location.type {struct YYLTYPE}
 %param {yyscan_t scanner}
 %header
-
+%initial-action {
+    yylloc.first_line = 0;
+    yylloc.first_column = 0;
+    yylloc.last_line = 0;
+    yylloc.last_column = 0;
+}
 
 %%
 range_set:
