@@ -10,10 +10,10 @@ void print_token(const int tok, const union YYSTYPE* yysval) {
       printf("' '\n");
       break;
     case TK_ID:
-      printf("identifier: %s\n", yysval->ident);
+      printf("%s (identifier)\n", yysval->ident);
       break;
     case TK_DIG:
-      printf("digit: %d\n", yysval->digits);
+      printf("%d (digit)\n", yysval->digits);
       break;
     case TK_DOT:
       printf(".\n");

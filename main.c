@@ -8,7 +8,7 @@ int main(void) {
   yyscan_t scanner;
   yylex_init(&scanner);
   int tok;
-  YYSTYPE val = {.tag = TAG_EMPTY};
+  YYSTYPE val;
   YYLTYPE loc = {
       .first_line = 0, .first_column = 0, .last_line = 0, .last_column = 0};
   do {
