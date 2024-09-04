@@ -3,7 +3,7 @@ BISON = parser.y
 BISON_O = $(BISON:%.y=%.tab.c) $(BISON:%.y=%.tab.h)
 FLEX = lex.l
 FLEX_O = $(FLEX:%.l=%.yy.c) $(FLEX:%.l=%.yy.h)
-OBJS = $(BISON:%.y=%.tab.o) $(FLEX:%.l=%.yy.o) main.o misc.o
+OBJS = $(BISON:%.y=%.tab.o) $(FLEX:%.l=%.yy.o) main.o misc.o ast.o
 SRCS = $(OBJS:%.o=%.c)
 CC = gcc
 LD = gcc

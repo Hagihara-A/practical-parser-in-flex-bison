@@ -1,5 +1,6 @@
 %code requires {
 #include <stdio.h>
+#include "ast.h"
 #include "misc.h"
 typedef void* yyscan_t;
 }
@@ -25,7 +26,9 @@ void yyerror (YYLTYPE *yylloc, yyscan_t scanner, char const *s);
 %token TK_EQ "="
 %token TK_OR "||"
 %token TK_X "X"
-%nterm <digits> range_set
+%nterm <range_set> range_set
+%nterm <range> range
+%nterm <simples> simples
 
 %define api.pure full
 %define api.value.type {union YYSTYPE}
@@ -40,10 +43,9 @@ void yyerror (YYLTYPE *yylloc, yyscan_t scanner, char const *s);
 }
 
 %%
-range_set:
-    TK_DIG {
-        @$ = @1;
-}
+partial:
+    "X" { $$ = partial0;}
+    "X"
 %%
 
 void yyerror (YYLTYPE *yylloc, yyscan_t scanner, char const *s) {

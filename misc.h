@@ -1,9 +1,27 @@
 #ifndef ASDASDASDASDSDADFGASDG
 #define ASDASDASDASDSDADFGASDG
 
+#include "ast.h"
+
 union YYSTYPE {
   int digits;
   char *ident;
+  RangeSet *range_set;
+  Range *range;
+  Simples *simples;
+  Hyphen *hyphen;
+  Simple *simple;
+  Primitive *primitive;
+  Compare compare;
+  Tilde *tilde;
+  Caret *caret;
+  Partial *partial;
+  Quolifier *quolifier;
+  Build *build;
+  Pre *pre;
+  Parts *parts;
+  Part *part;
+  Nr nr;
 };
 
 struct YYLTYPE {
