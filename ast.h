@@ -20,7 +20,7 @@ typedef struct {
 } Part;
 
 typedef struct Parts {
-  Part part;
+  Part *part;
   struct Parts *next;
 } Parts;
 
@@ -29,9 +29,9 @@ typedef Parts Pre;
 typedef Parts Build;
 
 typedef struct {
-  Pre pre;
-  Build build;
-} Quolifier;
+  Pre *pre;
+  Build *build;
+} Qualifier;
 
 typedef enum { Partial0, Partial1, Partial2, Partial3 } PartialTag;
 typedef struct {
@@ -47,7 +47,7 @@ typedef struct {
   Nr nr1;
   Nr nr2;
   Nr nr3;
-  Quolifier *quolifier;
+  Qualifier *qualifier;
 } Partial3Val;
 typedef union {
   Partial0Val partial0;
@@ -67,8 +67,8 @@ typedef Partial Tilde;
 typedef enum { CompLt, CompGt, CompGte, CompLte, CompEq } Compare;
 
 typedef struct {
-  Compare compare;
-  Partial partial;
+  Compare *compare;
+  Partial *partial;
 } Primitive;
 
 typedef enum {
@@ -93,7 +93,7 @@ typedef struct {
   Partial *partial2;
 } Hyphen;
 
-typedef struct Simples{
+typedef struct Simples {
   Simple simple;
   struct Simples *next;
 } Simples;
@@ -115,7 +115,7 @@ typedef struct {
 } Range;
 
 typedef struct RangeSet {
-  Range range;
+  Range *range;
   struct RangeSet *next;
 } RangeSet;
 
