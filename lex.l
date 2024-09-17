@@ -6,7 +6,7 @@
 #include "parser.tab.h"
 }
 
-%option bison-bridge bison-locations reentrant header-file="lex.yy.h" noyywrap yylineno
+%option bison-bridge reentrant header-file="lex.yy.h" noyywrap yylineno
 
 %%
 

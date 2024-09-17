@@ -5,11 +5,11 @@
 typedef void* yyscan_t;
 }
 %code provides {
-int yylex (YYSTYPE * yylval_param, YYLTYPE * yylloc_param , yyscan_t yyscanner);
-void yyerror (YYLTYPE *yylloc, yyscan_t scanner, char const *s);
+yytoken_kind_t yylex (YYSTYPE * yylval_param, yyscan_t yyscanner);
+void yyerror (yyscan_t scanner, char const *s);
 }
 
-%token TK_SPACE " "
+%token TK_SPACE "' '"
 %token <ident> TK_ID
 %token <digits> TK_DIG
 %token TK_DOT "."
@@ -25,30 +25,40 @@ void yyerror (YYLTYPE *yylloc, yyscan_t scanner, char const *s);
 %token TK_LE "<="
 %token TK_EQ "="
 %token TK_OR "||"
-%token TK_X "X"
-%nterm <range_set> range_set
-%nterm <range> range
-%nterm <simples> simples
+%token TK_X "x"
+
+%nterm <partial> partial
+%nterm <nr> nr
+%nterm <tilde> tilde
+%nterm <caret> caret
+%nterm <qualifier> qualifier
+%nterm <pre> pre
+%nterm <build> build
+%nterm <parts> parts
+%nterm <part> part
 
 %define api.pure full
 %define api.value.type {union YYSTYPE}
-%define api.location.type {struct YYLTYPE}
+/* %define api.location.type {struct YYLTYPE} */
+%define parse.error detailed
 %param {yyscan_t scanner}
 %header
-%initial-action {
+/* %initial-action {
     yylloc.first_line = 0;
     yylloc.first_column = 0;
     yylloc.last_line = 0;
     yylloc.last_column = 0;
-}
+} */
 
 %%
-partial:
-    "X" { $$ = partial0;}
-    "X"
+
+part:
+    TK_ID ' ' { $$ = partId($1); }
+
 %%
 
-void yyerror (YYLTYPE *yylloc, yyscan_t scanner, char const *s) {
-  fprintf (stderr, "%s\n", s);
+void yyerror (yyscan_t scanner, char const *s) {
+  fprintf(stderr, "%s\n", s);
+  fprintf(stderr, "while parsing: %s\n", yyget_text(scanner));
 }
 
