@@ -16,7 +16,7 @@ union YYSTYPE {
   Tilde *tilde;
   Caret *caret;
   Partial *partial;
-  Quolifier *quolifier;
+  Qualifier *qualifier;
   Build *build;
   Pre *pre;
   Parts *parts;

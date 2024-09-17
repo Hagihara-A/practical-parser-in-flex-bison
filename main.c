@@ -7,15 +7,14 @@
 int main(void) {
   yyscan_t scanner;
   yylex_init(&scanner);
-  int tok;
-  YYSTYPE val;
-  YYLTYPE loc = {
-      .first_line = 0, .first_column = 0, .last_line = 0, .last_column = 0};
-  do {
-    tok = yylex(&val, &loc, scanner);
-    print_token(tok, &val);
-  } while (tok != 0);
+  int parse_result = yyparse(scanner);
+  YYSTYPE* yylval = yyget_lval(scanner);
+  print_part(yylval);
   yylex_destroy(scanner);
-  printf("done\n");
+  if (parse_result == 0) {
+    printf("parse success\n");
+  } else {
+    printf("parse failed\n");
+  }
   return 0;
 }
