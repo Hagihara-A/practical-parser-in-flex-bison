@@ -13,9 +13,9 @@ union YYSTYPE {
   Simple *simple;
   Primitive *primitive;
   Compare compare;
+  Partial *partial;
   Tilde *tilde;
   Caret *caret;
-  Partial *partial;
   Qualifier *qualifier;
   Build *build;
   Pre *pre;
