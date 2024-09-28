@@ -7,15 +7,14 @@
 }
 
 %option bison-bridge reentrant header-file="lex.yy.h" noyywrap yylineno
+%option extra-type="Part *"
 
 %%
 
-[:space:]+ {return TK_SPACE;}
 [\-+][\-.[:alnum:]]+ {
-    char* ident = malloc(yyleng *  sizeof(char));
-    strncpy(ident, yytext + sizeof(char), yyleng-1);
-    ident[sizeof(ident)-1] = '\0';
-    yylval->ident = ident;
+    int ident_len = yyleng * sizeof(char); 
+    char *id_start = yytext + sizeof(char);
+    yylval->ident = strndup(id_start, yyleng);
     return TK_ID;
 }
 [1-9][0-9]*|0 {
@@ -24,7 +23,7 @@
 }
 "." {return TK_DOT;}
 "-" {return TK_HYPHEN;}
-[:space:]*" - "[:space:]* {return TK_HYPHEN_SEP;}
+" - " {return TK_HYPHEN_SEP;}
 "+" {return TK_PLUS;}
 "~" {return TK_TILDE;}
 "^" {return TK_CARET;}
@@ -34,7 +33,10 @@
 ">=" {return TK_GE;}
 "<=" {return TK_LE;}
 "=" {return TK_EQ;}
-[:space:]*"||"[:space:]* {return TK_OR;}
+"||" {return TK_OR;}
 X|x {return TK_X;}
+" "+ {return TK_SPACE;}
+<<EOF>> {return YYEOF;}
+.+ {return YYUNDEF;}
 
 %%

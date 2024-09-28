@@ -52,8 +52,10 @@ void yyerror (yyscan_t scanner, char const *s);
 
 %%
 
-part:
-    TK_ID ' ' { $$ = partId($1); }
+part: TK_ID {
+        $$ = partId($1, yyget_leng(scanner));
+        yyset_extra($$, scanner);
+    };
 
 %%
 

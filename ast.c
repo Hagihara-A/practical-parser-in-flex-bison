@@ -1,27 +1,35 @@
-#include <stdlib.h>
 #include "ast.h"
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 Part* partNr(const Nr nr) {
   Part* p = malloc(sizeof(Part));
   p->tag = PartNr;
-  p->val.partNr.nr = nr;
+  p->val.partNr = nr;
   return p;
 }
 
-Part* partId(const char* id) {
+Part* partId(const char* id, size_t len) {
   Part* p = malloc(sizeof(Part));
   p->tag = PartId;
-  p->val.partId.id = id;
+  p->val.partId = strndup(id, len);
   return p;
 }
 
 void print_part(const Part* part) {
   switch (part->tag) {
     case PartNr:
-      printf("%d\n", part->val.partNr.nr);
+      printf("PartNr: ");
+      printf("%d\n", part->val.partNr);
       break;
     case PartId:
-      printf("%s\n", part->val.partId.id);
+      printf("PartId: ");
+      printf("%s\n", part->val.partId);
+      break;
+    default:
+      printf("unknown part\n");
       break;
   }
 }

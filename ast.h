@@ -1,24 +1,21 @@
 #ifndef AST_H
 #define AST_H
 
+#include <stddef.h>
+
 typedef int Nr;
 
 typedef enum { PartNr, PartId } PartTag;
-typedef struct {
-  Nr nr;
-} PartNrVal;
-typedef struct {
-  char *id;
-} PartIdVal;
 typedef union {
-  PartNrVal partNr;
-  PartIdVal partId;
+  Nr partNr;
+  const char *partId;
 } PartVal;
 typedef struct {
   PartTag tag;
   PartVal val;
 } Part;
-
+void print_part(const Part *part);
+Part *partId(const char *id, size_t len);
 typedef struct Parts {
   Part *part;
   struct Parts *next;

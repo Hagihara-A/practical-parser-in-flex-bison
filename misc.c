@@ -1,10 +1,11 @@
 #include "misc.h"
 
 #include <stdio.h>
+#include <string.h>
 
 #include "parser.tab.h"
 
-void print_token(const int tok, const union YYSTYPE* yysval) {
+void print_token(const int tok, const union YYSTYPE *yysval) {
   switch (tok) {
     case TK_SPACE:
       printf("' '\n");
@@ -16,43 +17,46 @@ void print_token(const int tok, const union YYSTYPE* yysval) {
       printf("%d (digit)\n", yysval->digits);
       break;
     case TK_DOT:
-      printf(".\n");
+      printf("'.'\n");
       break;
     case TK_HYPHEN:
-      printf("-\n");
+      printf("'-'\n");
       break;
     case TK_HYPHEN_SEP:
       printf("' - '\n");
       break;
     case TK_PLUS:
-      printf("+\n");
+      printf("'+'\n");
       break;
     case TK_TILDE:
-      printf("~\n");
+      printf("'~'\n");
       break;
     case TK_CARET:
-      printf("^\n");
+      printf("'^'\n");
       break;
     case TK_LT:
-      printf("<\n");
+      printf("'<'\n");
       break;
     case TK_GT:
-      printf(">\n");
+      printf("'>'\n");
       break;
     case TK_GE:
-      printf(">=\n");
+      printf("'>='\n");
       break;
     case TK_LE:
-      printf("<=\n");
+      printf("'<='\n");
       break;
     case TK_EQ:
-      printf("=\n");
+      printf("'='\n");
       break;
     case TK_OR:
-      printf("||\n");
+      printf("'||'\n");
       break;
     case TK_X:
-      printf("X\n");
+      printf("'X'\n");
+      break;
+    case YYEOF:
+      printf("<<EOF>>\n");
       break;
     default:
       printf("token: %d\n", tok);
