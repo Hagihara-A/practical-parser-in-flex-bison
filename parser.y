@@ -5,8 +5,8 @@
 typedef void* yyscan_t;
 }
 %code provides {
-yytoken_kind_t yylex (YYSTYPE * yylval_param, yyscan_t yyscanner);
-void yyerror (yyscan_t scanner, char const *s);
+yytoken_kind_t yylex ( YYSTYPE * lvalp, YYLTYPE * llocp, yyscan_t scanner );
+void yyerror (struct YYLTYPE* lloc, yyscan_t scanner, char const *s);
 }
 
 %token TK_SPACE "' '"
@@ -45,7 +45,7 @@ void yyerror (yyscan_t scanner, char const *s);
 
 %define api.pure full
 %define api.value.type {union YYSTYPE}
-/* %define api.location.type {struct YYLTYPE} */
+%define api.location.type {struct YYLTYPE}
 %define parse.error detailed
 %param {yyscan_t scanner}
 %header
@@ -157,18 +157,13 @@ parts
 
 
 part:
-    nr { 
-        $$ = partNr($1);
-        print_part($$, 0);
-    }
-    | "identifier" { $$ = partId($1, yyget_leng(scanner));
-        print_part($$, 0);
-     }
+    nr { $$ = partNr($1, @1); }
+    | "identifier" { $$ = partId($1, yyget_leng(scanner), @1); }
     ;
 
 %%
 
-void yyerror (yyscan_t scanner, char const *s) {
+void yyerror (struct YYLTYPE* lloc, yyscan_t scanner, char const *s) {
   fprintf(stderr, "%s\n", s);
 }
 

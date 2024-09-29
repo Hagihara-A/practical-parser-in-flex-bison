@@ -2,21 +2,36 @@
 #define AST_H
 
 #include <stddef.h>
+struct YYLTYPE {
+  int first_line;
+  int first_column;
+  int last_line;
+  int last_column;
+};
 
 typedef int Nr;
 
 typedef enum { PartId, PartNr } PartTag;
+struct PartIdVal {
+  char *id;
+  struct YYLTYPE range;
+};
+struct PartNrVal {
+  Nr nr;
+  struct YYLTYPE range;
+};
+
 typedef union {
-  Nr partNr;
-  char *partId;
+  struct PartNrVal partNr;
+  struct PartIdVal partId;
 } PartVal;
 typedef struct {
   PartTag tag;
   PartVal val;
 } Part;
 void print_part(const Part *part, int depth);
-Part *partId(const char *id, size_t len);
-Part *partNr(const Nr nr);
+Part *partNr(const Nr nr, struct YYLTYPE range);
+Part *partId(const char *id, size_t len, struct YYLTYPE range);
 
 typedef struct Parts {
   Part *part;

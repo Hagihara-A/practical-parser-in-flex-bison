@@ -11,17 +11,19 @@ void print_nr(const Nr nr, int depth) {
   printf("Nr: %d\n", nr);
 }
 
-Part* partNr(const Nr nr) {
+Part* partNr(const Nr nr, struct YYLTYPE range) {
   Part* p = malloc(sizeof(Part));
   p->tag = PartNr;
-  p->val.partNr = nr;
+  p->val.partNr.nr = nr;
+  p->val.partNr.range = range;
   return p;
 }
 
-Part* partId(const char* id, size_t len) {
+Part* partId(const char* id, size_t len, struct YYLTYPE range) {
   Part* p = malloc(sizeof(Part));
   p->tag = PartId;
-  p->val.partId = strndup(id, len);
+  p->val.partId.id = strndup(id, len);
+  p->val.partId.range = range;
   return p;
 }
 
@@ -38,14 +40,12 @@ void print_part(const Part* part, int depth) {
   switch (part->tag) {
     case PartNr:
       printf("PartNr\n");
-      print_nr(part->val.partNr, d2);
+      print_nr(part->val.partNr.nr, d2);
       break;
     case PartId:
-      printf("PartId\n");
-      for (int i = 0; i < d2; i++) {
-        printf("  ");
-      }
-      printf("%s\n", part->val.partId);
+      printf("PartId: ");
+      printf("\"%s\"\n", part->val.partId.id);
+      print_location(&part->val.partId.range, d2);
       break;
     default:
       printf("unknown part\n");
@@ -378,4 +378,12 @@ void print_range_set(const RangeSet* range_set, const int depth) {
     print_range(r->range, depth + 1);
     r = r->next;
   }
+}
+
+void print_location(const struct YYLTYPE* loc, const int depth) {
+  for (int i = 0; i < depth; i++) {
+    printf("  ");
+  }
+  printf("Location: %d:%d-%d:%d\n", loc->first_line, loc->first_column,
+         loc->last_line, loc->last_column);
 }

@@ -5,61 +5,69 @@
 
 #include "parser.tab.h"
 
-void print_token(const int tok, const union YYSTYPE *yysval) {
+void print_token(const int tok, const union YYSTYPE *yysval,
+                 const struct YYLTYPE *yylloc) {
   switch (tok) {
     case TK_SPACE:
-      printf("' '\n");
+      printf("' '");
       break;
     case TK_ID:
-      printf("%s (identifier)\n", yysval->ident);
+      printf("%s (identifier)", yysval->ident);
       break;
     case TK_DIG:
-      printf("%d (digit)\n", yysval->digits);
+      printf("%d (digit)", yysval->digits);
       break;
     case TK_DOT:
-      printf("'.'\n");
+      printf("'.'");
       break;
     case TK_HYPHEN:
-      printf("'-'\n");
+      printf("'-'");
       break;
     case TK_HYPHEN_SEP:
-      printf("' - '\n");
+      printf("' - '");
       break;
     case TK_PLUS:
-      printf("'+'\n");
+      printf("'+'");
       break;
     case TK_TILDE:
-      printf("'~'\n");
+      printf("'~'");
       break;
     case TK_CARET:
-      printf("'^'\n");
+      printf("'^'");
       break;
     case TK_LT:
-      printf("'<'\n");
+      printf("'<'");
       break;
     case TK_GT:
-      printf("'>'\n");
+      printf("'>'");
       break;
     case TK_GE:
-      printf("'>='\n");
+      printf("'>='");
       break;
     case TK_LE:
-      printf("'<='\n");
+      printf("'<='");
       break;
     case TK_EQ:
-      printf("'='\n");
+      printf("'='");
       break;
     case TK_OR:
-      printf("'||'\n");
+      printf("'||'");
       break;
     case TK_X:
-      printf("'X'\n");
+      printf("'X'");
       break;
     case YYEOF:
-      printf("<<EOF>>\n");
+      printf("<<EOF>>");
       break;
     default:
-      printf("token: %d\n", tok);
+      printf("token: %d", tok);
       break;
   }
+  printf(" at %d:%d-%d:%d\n", yylloc->first_line, yylloc->first_column,
+         yylloc->last_line, yylloc->last_column);
+}
+
+void yy_update_location(struct YYLTYPE *yylloc, size_t leng) {
+  yylloc->first_column = yylloc->last_column;
+  yylloc->last_column = yylloc->last_column + leng;
 }

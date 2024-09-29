@@ -24,12 +24,8 @@ union YYSTYPE {
   Nr nr;
 };
 
-struct YYLTYPE {
-  int first_line;
-  int first_column;
-  int last_line;
-  int last_column;
-};
+void print_token(const int tok, const union YYSTYPE *yysval,
+                 const struct YYLTYPE *yylloc);
+void yy_update_location(struct YYLTYPE *yylloc, size_t leng);
 
-void print_token(const int tok, const union YYSTYPE *yysval);
 #endif
