@@ -135,23 +135,23 @@ caret
     | "^" "' '" partial { $$ = $3; }
     ;
 
-qualifier: 
-    /* empty */ { $$ = qualifier(NULL, NULL); }
+qualifier 
+    : /* empty */ { $$ = qualifier(NULL, NULL); }
     | "-" pre  { $$ = qualifier($2, NULL); }
     | "+" build { $$ = qualifier(NULL, $2); }
     | "-" pre "+" build { $$ = qualifier($2, $4); }
     ;
 
 pre:
-    parts { $$ = parts_singleton($1); }
+    parts { $$ = $1; }
     ;
 
 build:
-    parts { $$ = parts_singleton($1); }
+    parts { $$ = $1; }
     ;
 
-parts:
-    parts "." part {  $$ = parts_append($1, $3); }
+parts
+    : parts "." part {  $$ = parts_append($1, $3); }
     | part { $$ = parts_singleton($1); }
     ;
 
@@ -160,11 +160,9 @@ part:
     nr { 
         $$ = partNr($1);
         print_part($$, 0);
-        
-         }
+    }
     | "identifier" { $$ = partId($1, yyget_leng(scanner));
         print_part($$, 0);
-        
      }
     ;
 
